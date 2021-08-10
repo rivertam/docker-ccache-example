@@ -15,7 +15,6 @@ FROM ubuntu
 ARG DEBIAN_FRONTEND=noninteractive
 RUN apt-get update && apt-get install --no-install-recommends -qy \
     clang \
-    ccache \
     cmake \
     build-essential \
     && rm -rf /var/lib/apt/lists/*
@@ -32,14 +31,8 @@ COPY CMakeLists.txt /root/thing
 
 WORKDIR $BUILD_DIR
 
-ENV CCACHE_BASEDIR="/ccache"
-ENV CCACHE_DIR="${CCACHE_BASEDIR}/.cache/${PLATFORM}"
-
-RUN --mount=type=cache,target=/ccache/ \
-    --mount=type=cache,target=/build/ \
+RUN --mount=type=cache,target=/build/ \
   cmake \
-    -DCMAKE_C_COMPILER_LAUNCHER=ccache \
-    -DCMAKE_CXX_COMPILER_LAUNCHER=ccache \
     -DCMAKE_ARCHIVE_OUTPUT_DIRECTORY="$(pwd)" \
     -DCMAKE_LIBRARY_OUTPUT_DIRECTORY="$(pwd)" \
     /root/thing && make

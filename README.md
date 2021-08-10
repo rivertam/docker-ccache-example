@@ -1,7 +1,10 @@
-# Docker ccache example
+# Docker C++ caching example
 
 This example is a simple C++ binary with two compilation units and a Dockerfile
-that builds them using two build cache volumes.
+that builds them using a build cache volume to avoid recompiling the whole
+thing.
+
+Initially this included ccache but it doesn't seem necessary anymore.
 
 ## Testing
 
