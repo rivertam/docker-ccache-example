@@ -24,15 +24,13 @@ ENV CXX=clang++
 
 ARG PLATFORM
 
-ENV BUILD_DIR "/build/${PLATFORM}"
-
 COPY src/ /root/thing/src
 COPY CMakeLists.txt /root/thing
 
-WORKDIR $BUILD_DIR
+WORKDIR /root/thing/build/${PLATFORM}
 
-RUN --mount=type=cache,target=/build/ \
+RUN --mount=type=cache,target=/root/thing/build/ \
   cmake \
     -DCMAKE_ARCHIVE_OUTPUT_DIRECTORY="$(pwd)" \
     -DCMAKE_LIBRARY_OUTPUT_DIRECTORY="$(pwd)" \
-    /root/thing && make
+    ../.. && make
